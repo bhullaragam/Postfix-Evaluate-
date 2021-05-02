@@ -1,0 +1,73 @@
+// CISP 430 Spring 2021 Agam Bhullar W#1741784
+/*postifixEvaluate*/
+#include<stdio.h>
+#include <ctype.h>
+
+
+int stack[100],top = -1;
+//This function is used to push data in stack
+void push_into_stack(int data)
+{
+    stack[++top] = data;
+}
+
+//This function is used to pop data from stack
+int pop_from_stack()
+{
+    return stack[top--];
+}
+
+int main()
+{
+    char expression[100],*str;
+    int number1,number2,number3 = 0,number;
+    FILE *file;
+    file = fopen("input.txt", "r");
+    fscanf(file, "%s", expression);
+    str = expression;
+    while(*str != '\0')
+    {
+        if(isdigit(*str))
+        {
+
+            number = *str - 48;     // because char 1 starts from 49
+            push_into_stack(number);
+        }
+        else
+        {
+            number1 = pop_from_stack();
+            number2 = pop_from_stack();
+            switch(*str)
+            {
+            case '+':
+            {
+                number3 = number1 + number2;
+                break;
+            }
+            case '-':
+            {
+                number3 = number2 - number1;
+                break;
+            }
+            case '*':
+            {
+                number3 = number1 * number2;
+                break;
+            }
+            case '/':
+            {
+                number3 = number2 / number1;
+                break;
+            }
+            }
+            push_into_stack(number3);
+        }
+        str++;
+    }
+    printf("\n Result %s  =  %d\n\n",expression,pop_from_stack());
+    return 0;
+}
+
+
+
+
